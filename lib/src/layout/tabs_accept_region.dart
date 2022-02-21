@@ -8,9 +8,9 @@ import 'package:tabs/src/tab.dart';
 class TabAcceptRegion extends StatelessWidget {
   TabAcceptRegion({this.child, this.original, this.onReplace});
 
-  final Widget child;
-  final TabsLayout original;
-  final void Function(TabsLayout) onReplace;
+  final Widget? child;
+  final TabsLayout? original;
+  final void Function(TabsLayout)? onReplace;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class TabAcceptRegion extends StatelessWidget {
       builder: (context, constrains) {
         return Stack(
           children: [
-            Positioned.fill(child: child),
+            Positioned.fill(child: child!),
             Positioned(
               top: 0,
               width: constrains.maxWidth,
@@ -29,7 +29,7 @@ class TabAcceptRegion extends StatelessWidget {
                   final controller = TabGroupController();
                   controller.addTab(tab);
                   final group = TabsGroup(controller: controller);
-                  onReplace(TabColumn(top: group, bottom: original));
+                  onReplace!(TabColumn(top: group, bottom: original));
                 },
               ),
             ),
@@ -42,7 +42,7 @@ class TabAcceptRegion extends StatelessWidget {
                   final controller = TabGroupController();
                   controller.addTab(tab);
                   final group = TabsGroup(controller: controller);
-                  onReplace(TabColumn(top: original, bottom: group));
+                  onReplace!(TabColumn(top: original, bottom: group));
                 },
               ),
             ),
@@ -57,7 +57,7 @@ class TabAcceptRegion extends StatelessWidget {
                   final controller = TabGroupController();
                   controller.addTab(tab);
                   final group = TabsGroup(controller: controller);
-                  onReplace(TabRow(left: original, right: group));
+                  onReplace!(TabRow(left: original, right: group));
                 },
               ),
             ),
@@ -72,7 +72,7 @@ class TabAcceptRegion extends StatelessWidget {
                   final controller = TabGroupController();
                   controller.addTab(tab);
                   final group = TabsGroup(controller: controller);
-                  onReplace(TabRow(left: group, right: original));
+                  onReplace!(TabRow(left: group, right: original));
                 },
               ),
             ),
@@ -85,7 +85,7 @@ class TabAcceptRegion extends StatelessWidget {
 
 class TabAcceptArea extends StatefulWidget {
   const TabAcceptArea({
-    Key key,
+    Key? key,
     this.onAccept,
     this.left,
     this.right,
@@ -93,11 +93,11 @@ class TabAcceptArea extends StatefulWidget {
     this.bottom,
   }) : super(key: key);
 
-  final void Function(Tab) onAccept;
-  final double left;
-  final double right;
-  final double top;
-  final double bottom;
+  final void Function(Tab)? onAccept;
+  final double? left;
+  final double? right;
+  final double? top;
+  final double? bottom;
 
   @override
   _TabAcceptAreaState createState() => _TabAcceptAreaState();
@@ -129,7 +129,7 @@ class _TabAcceptAreaState extends State<TabAcceptArea> {
                 setState(() => isAccepting = false);
               }
               if (widget.onAccept != null) {
-                widget.onAccept(val);
+                widget.onAccept!(val);
               }
             },
             onWillAccept: (val) {

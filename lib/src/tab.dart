@@ -1,9 +1,6 @@
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tabs/src/layout/close_listener.dart';
 import 'package:tabs/src/util/invisible.dart';
 
@@ -12,18 +9,18 @@ class TabController with ChangeNotifier {
 
   TabController._(this._title, this._content);
 
-  String _title;
+  String? _title;
 
-  Widget _content;
+  Widget? _content;
 
-  String get title => _title;
+  String? get title => _title;
 
   void setTitle(String title) {
     _title = title;
     notifyListeners();
   }
 
-  Widget get content => _content;
+  Widget? get content => _content;
 
   void setContent(Widget content) {
     _content = content;
@@ -50,11 +47,11 @@ class Tab {
     this.onDrop,
   });
 
-  final TabController controller;
-  final String title;
-  final void Function() onClose;
-  final void Function() onActivate;
-  final void Function() onDrop;
+  final TabController? controller;
+  final String? title;
+  final void Function()? onClose;
+  final void Function()? onActivate;
+  final void Function()? onDrop;
 
   Widget build(bool isActive, [bool isAccepting = false]) {
     return TabWidget(
@@ -67,7 +64,7 @@ class Tab {
   Tab copy() {
     return Tab(
       title: title,
-      controller: controller.copy(),
+      controller: controller!.copy(),
       onClose: onClose,
       onActivate: onActivate,
       onDrop: onDrop,
@@ -84,65 +81,65 @@ class TabWidget extends StatefulWidget {
     this.isAccepting,
   });
 
-  final Tab tab;
-  final bool isActive;
-  final bool isAccepting;
+  final Tab? tab;
+  final bool? isActive;
+  final bool? isAccepting;
 
   @override
   _TabWidgetState createState() => _TabWidgetState();
 }
 
 class _TabWidgetState extends State<TabWidget> {
-  var title = '';
+  String? title = '';
   var hover = false;
 
   void onChange() {
-    if (widget.tab.controller?.title != null) {
+    if (widget.tab!.controller?.title != null) {
       setState(() {
-        title = widget.tab.controller.title;
+        title = widget.tab!.controller!.title;
       });
     }
   }
 
   @override
   void initState() {
-    title = widget.tab.controller?.title ?? widget.tab.title ?? title;
-    widget.tab.controller?.addListener(onChange);
-    widget.tab.controller.closeRequest?.addListener(close);
+    title = widget.tab!.controller?.title ?? widget.tab!.title ?? title;
+    widget.tab!.controller?.addListener(onChange);
+    widget.tab!.controller!.closeRequest.addListener(close);
     super.initState();
   }
 
   @override
   void didUpdateWidget(TabWidget oldWidget) {
-    title = widget.tab.controller?.title ?? widget.tab.title ?? title;
-    oldWidget.tab.controller?.removeListener(onChange);
-    oldWidget.tab.controller.closeRequest?.removeListener(close);
-    widget.tab.controller?.addListener(onChange);
-    widget.tab.controller.closeRequest?.addListener(close);
+    title = widget.tab!.controller?.title ?? widget.tab!.title ?? title;
+    oldWidget.tab!.controller?.removeListener(onChange);
+    oldWidget.tab!.controller!.closeRequest.removeListener(close);
+    widget.tab!.controller?.addListener(onChange);
+    widget.tab!.controller!.closeRequest.addListener(close);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    widget.tab.controller?.removeListener(onChange);
-    widget.tab.controller.closeRequest?.removeListener(close);
+    widget.tab!.controller?.removeListener(onChange);
+    widget.tab!.controller!.closeRequest.removeListener(close);
     super.dispose();
   }
 
   void close() {
-    CloseListener.of(context).close(widget.tab);
-    widget.tab.onClose?.call();
+    CloseListener.of(context)!.close(widget.tab);
+    widget.tab!.onClose?.call();
   }
 
   @override
   Widget build(BuildContext context) {
     BoxDecoration decoration;
 
-    if (widget.isAccepting) {
+    if (widget.isAccepting!) {
       decoration = BoxDecoration(
         color: Color(0xFF5A5A5A),
       );
-    } else if (widget.isActive) {
+    } else if (widget.isActive!) {
       decoration = BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -156,11 +153,11 @@ class _TabWidgetState extends State<TabWidget> {
       );
     }
 
-    final textColor = widget.isActive ? Colors.white : _kInactiveTextColor;
+    final textColor = widget.isActive! ? Colors.white : _kInactiveTextColor;
 
     final content = Center(
       child: Text(
-        title,
+        title!,
         style: TextStyle(color: textColor),
         softWrap: false,
         overflow: TextOverflow.fade,
@@ -184,7 +181,7 @@ class _TabWidgetState extends State<TabWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Invisible(
-              visible: hover || widget.isActive,
+              visible: hover || widget.isActive!,
               child: _CloseButton(onClick: close),
             ),
             Expanded(
@@ -200,7 +197,7 @@ class _TabWidgetState extends State<TabWidget> {
 class _CloseButton extends StatelessWidget {
   _CloseButton({this.onClick});
 
-  final void Function() onClick;
+  final void Function()? onClick;
 
   @override
   Widget build(BuildContext context) {

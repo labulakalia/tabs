@@ -11,8 +11,8 @@ class TabRow extends StatefulWidget implements TabsLayout {
     this.minWidth = 100,
   });
 
-  final TabsLayout left;
-  final TabsLayout right;
+  final TabsLayout? left;
+  final TabsLayout? right;
   final double minWidth;
 
   @override
@@ -33,22 +33,22 @@ class _TabRowState extends State<TabRow> {
 
   var isDragging = false;
 
-  void onReplaceLeft(TabsLayout replacement) {
+  void onReplaceLeft(TabsLayout? replacement) {
     if (replacement == null) {
-      ReplaceListener.of(context).requestReplace(widget.right);
+      ReplaceListener.of(context)!.requestReplace(widget.right);
     } else {
-      ReplaceListener.of(context).requestReplace(TabRow(
+      ReplaceListener.of(context)!.requestReplace(TabRow(
         left: replacement,
         right: widget.right,
       ));
     }
   }
 
-  void onReplaceRight(TabsLayout replacement) {
+  void onReplaceRight(TabsLayout? replacement) {
     if (replacement == null) {
-      ReplaceListener.of(context).requestReplace(widget.left);
+      ReplaceListener.of(context)!.requestReplace(widget.left);
     } else {
-      ReplaceListener.of(context).requestReplace(TabRow(
+      ReplaceListener.of(context)!.requestReplace(TabRow(
         left: widget.left,
         right: replacement,
       ));
@@ -64,7 +64,7 @@ class _TabRowState extends State<TabRow> {
             key: keyLeft,
             flex: flexLeft.round(),
             child: ReplaceListener(
-              child: widget.left,
+              child: widget.left!,
               onReplace: onReplaceLeft,
             ),
           ),
@@ -77,9 +77,9 @@ class _TabRowState extends State<TabRow> {
             },
             onVerticalDragUpdate: (details) {
               final flexLeft =
-                  details.globalPosition.dx - keyLeft.globalPaintBounds.left;
+                  details.globalPosition.dx - keyLeft.globalPaintBounds!.left;
               final flexRight =
-                  keyRight.globalPaintBounds.right - details.globalPosition.dx;
+                  keyRight.globalPaintBounds!.right - details.globalPosition.dx;
 
               if (flexLeft < widget.minWidth || flexRight < widget.minWidth) {
                 return;
@@ -96,7 +96,7 @@ class _TabRowState extends State<TabRow> {
             key: keyRight,
             flex: flexRight.round(),
             child: ReplaceListener(
-              child: widget.right,
+              child: widget.right!,
               onReplace: onReplaceRight,
             ),
           ),

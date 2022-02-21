@@ -1,4 +1,3 @@
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tabs/src/layout/close_listener.dart';
 import 'package:tabs/src/layout/replace_listener.dart';
@@ -35,9 +34,9 @@ class TabGroupController with ChangeNotifier {
     notifyListeners();
   }
 
-  int _activeTabIndex;
+  int? _activeTabIndex;
 
-  int get activeTabIndex => _activeTabIndex;
+  int? get activeTabIndex => _activeTabIndex;
 
   void setActiveTab(int index) {
     if (index < 0 || index >= _tabs.length) {
@@ -51,12 +50,12 @@ class TabGroupController with ChangeNotifier {
     notifyListeners();
   }
 
-  Tab getActiveTab() {
-    if (_activeTabIndex == null || _activeTabIndex >= _tabs.length) {
+  Tab? getActiveTab() {
+    if (_activeTabIndex == null || _activeTabIndex! >= _tabs.length) {
       return null;
     }
 
-    return _tabs[_activeTabIndex];
+    return _tabs[_activeTabIndex!];
   }
 
   void removeTabIndex(int index) {
@@ -69,7 +68,7 @@ class TabGroupController with ChangeNotifier {
     if (_tabs.isEmpty) {
       _activeTabIndex = null;
     } else {
-      setActiveTab(_activeTabIndex.clamp(0, _tabs.length - 1));
+      setActiveTab(_activeTabIndex!.clamp(0, _tabs.length - 1));
     }
 
     notifyListeners();
@@ -81,7 +80,7 @@ class TabGroupController with ChangeNotifier {
     if (_tabs.isEmpty) {
       _activeTabIndex = null;
     } else {
-      _activeTabIndex = _activeTabIndex.clamp(0, _tabs.length - 1);
+      _activeTabIndex = _activeTabIndex!.clamp(0, _tabs.length - 1);
     }
 
     notifyListeners();
@@ -90,9 +89,9 @@ class TabGroupController with ChangeNotifier {
 
 class TabGroupProvider extends InheritedWidget {
   TabGroupProvider({
-    Key key,
-    @required this.child,
-    @required this.controller,
+    Key? key,
+    required this.child,
+    required this.controller,
   }) : super(key: key, child: child);
 
   @override
@@ -100,7 +99,7 @@ class TabGroupProvider extends InheritedWidget {
 
   final TabGroupController controller;
 
-  static TabGroupProvider of(BuildContext context) {
+  static TabGroupProvider? of(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<TabGroupProvider>());
   }
 
@@ -112,7 +111,7 @@ class TabGroupProvider extends InheritedWidget {
 
 class TabsGroup extends StatefulWidget implements TabsLayout {
   TabsGroup({
-    @required this.controller,
+    required this.controller,
   });
 
   final TabGroupController controller;
@@ -152,7 +151,7 @@ class TabsGroupState extends State<TabsGroup> {
       child: TabAcceptRegion(
         original: widget,
         onReplace: (layout) {
-          ReplaceListener.of(context).requestReplace(layout);
+          ReplaceListener.of(context)!.requestReplace(layout);
         },
         child: Column(
           children: [
@@ -182,7 +181,7 @@ class TabsGroupState extends State<TabsGroup> {
 
       final isActive = i == widget.controller.activeTabIndex;
 
-      BoxConstraints lastConstraints;
+      BoxConstraints? lastConstraints;
       var isAccepting = false;
 
       final child = Expanded(
@@ -226,12 +225,12 @@ class TabsGroupState extends State<TabsGroup> {
           onDragStarted: () {
             widget.controller.setActiveTab(i);
             if (widget.controller.length <= 1) {
-              ReplaceListener.of(context).requestReplace(null);
+              ReplaceListener.of(context)!.requestReplace(null);
             }
           },
           onDragEnd: (detail) {
             if (detail.wasAccepted) {
-              widget.controller?.removeTab(tab);
+              widget.controller.removeTab(tab);
               tab.onDrop?.call();
             }
           },
@@ -246,9 +245,9 @@ class TabsGroupState extends State<TabsGroup> {
 
     final tabRow = CloseListener(
       onClose: (tab) {
-        widget.controller.removeTab(tab);
+        widget.controller.removeTab(tab!);
         if (widget.controller.length <= 0) {
-          ReplaceListener.of(context).requestReplace(null);
+          ReplaceListener.of(context)!.requestReplace(null);
         }
       },
       child: Row(
@@ -275,7 +274,7 @@ class TabsGroupState extends State<TabsGroup> {
   }
 
   Widget _buildActions(BuildContext context) {
-    final actions = TabsGroupActions.of(context).actions;
+    final actions = TabsGroupActions.of(context)!.actions;
 
     final actionButtons = <Widget>[];
 
@@ -287,7 +286,7 @@ class TabsGroupState extends State<TabsGroup> {
   }
 
   Widget _buildContent(BuildContext context) {
-    final activeTab = widget.controller?.getActiveTab();
+    final activeTab = widget.controller.getActiveTab()!;
     return TabContent(activeTab.controller);
   }
 }
@@ -295,7 +294,7 @@ class TabsGroupState extends State<TabsGroup> {
 class TabContent extends StatefulWidget {
   TabContent(this.tab);
 
-  final TabController tab;
+  final TabController? tab;
 
   @override
   _TabContentState createState() => _TabContentState();
@@ -308,25 +307,25 @@ class _TabContentState extends State<TabContent> {
 
   @override
   void initState() {
-    widget.tab.addListener(onChange);
+    widget.tab!.addListener(onChange);
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant TabContent oldWidget) {
-    oldWidget.tab.removeListener(onChange);
-    widget.tab.addListener(onChange);
+    oldWidget.tab!.removeListener(onChange);
+    widget.tab!.addListener(onChange);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    widget.tab.removeListener(onChange);
+    widget.tab!.removeListener(onChange);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.tab.content ?? Container();
+    return widget.tab!.content ?? Container();
   }
 }

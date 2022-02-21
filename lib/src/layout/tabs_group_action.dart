@@ -1,18 +1,17 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tabs/src/layout/tabs_group.dart';
 
 class TabsGroupAction extends StatelessWidget {
   TabsGroupAction({this.icon, this.onTap});
 
-  final IconData icon;
-  final void Function(TabGroupController) onTap;
+  final IconData? icon;
+  final void Function(TabGroupController)? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final group = TabGroupProvider.of(context).controller;
+    final group = TabGroupProvider.of(context)!.controller;
     return GestureDetector(
-      onTap: () => onTap(group),
+      onTap: () => onTap!(group),
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Container(
@@ -30,8 +29,8 @@ class TabsGroupAction extends StatelessWidget {
 
 class TabsGroupActions extends InheritedWidget {
   TabsGroupActions({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.actions = const [],
   }) : super(key: key, child: child);
 
@@ -40,7 +39,7 @@ class TabsGroupActions extends InheritedWidget {
 
   final List<TabsGroupAction> actions;
 
-  static TabsGroupActions of(BuildContext context) {
+  static TabsGroupActions? of(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<TabsGroupActions>());
   }
 

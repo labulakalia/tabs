@@ -1,4 +1,3 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:tabs/src/util/divider.dart';
@@ -21,7 +20,7 @@ class HorizontalDragBar extends StatelessWidget {
         height: 8,
         color: isDragging ? _kActiveColor : _kColor,
         border: BorderSide(
-          color: Colors.grey[900],
+          color: Colors.grey[900]!,
           width: 1,
         ),
       ),
@@ -42,7 +41,7 @@ class VerticalDragBar extends StatelessWidget {
         width: 8,
         color: isDragging ? _kActiveColor : _kColor,
         border: BorderSide(
-          color: Colors.grey[900],
+          color: Colors.grey[900]!,
           width: 1,
         ),
       ),

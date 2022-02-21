@@ -11,8 +11,8 @@ class TabColumn extends StatefulWidget implements TabsLayout {
     this.minHeight = 100,
   });
 
-  final TabsLayout top;
-  final TabsLayout bottom;
+  final TabsLayout? top;
+  final TabsLayout? bottom;
   final double minHeight;
 
   @override
@@ -33,22 +33,22 @@ class _TabColumnState extends State<TabColumn> {
 
   var isDragging = false;
 
-  void onReplaceTop(TabsLayout replacement) {
+  void onReplaceTop(TabsLayout? replacement) {
     if (replacement == null) {
-      ReplaceListener.of(context).requestReplace(widget.bottom);
+      ReplaceListener.of(context)!.requestReplace(widget.bottom);
     } else {
-      ReplaceListener.of(context).requestReplace(TabColumn(
+      ReplaceListener.of(context)!.requestReplace(TabColumn(
         top: replacement,
         bottom: widget.bottom,
       ));
     }
   }
 
-  void onReplaceBottom(TabsLayout replacement) {
+  void onReplaceBottom(TabsLayout? replacement) {
     if (replacement == null) {
-      ReplaceListener.of(context).requestReplace(widget.top);
+      ReplaceListener.of(context)!.requestReplace(widget.top);
     } else {
-      ReplaceListener.of(context).requestReplace(TabColumn(
+      ReplaceListener.of(context)!.requestReplace(TabColumn(
         top: widget.top,
         bottom: replacement,
       ));
@@ -63,7 +63,7 @@ class _TabColumnState extends State<TabColumn> {
           key: keyTop,
           flex: flexTop.round(),
           child: ReplaceListener(
-            child: widget.top,
+            child: widget.top!,
             onReplace: onReplaceTop,
           ),
         ),
@@ -77,9 +77,9 @@ class _TabColumnState extends State<TabColumn> {
           onHorizontalDragUpdate: (details) {
 
             final flexTop =
-                details.globalPosition.dy - keyTop.globalPaintBounds.top;
+                details.globalPosition.dy - keyTop.globalPaintBounds!.top;
             final flexBottom =
-                keyBottom.globalPaintBounds.bottom - details.globalPosition.dy;
+                keyBottom.globalPaintBounds!.bottom - details.globalPosition.dy;
 
             if (flexTop < widget.minHeight || flexBottom < widget.minHeight) {
               return;
@@ -96,7 +96,7 @@ class _TabColumnState extends State<TabColumn> {
           key: keyBottom,
           flex: flexBottom.round(),
           child: ReplaceListener(
-            child: widget.bottom,
+            child: widget.bottom!,
             onReplace: onReplaceBottom,
           ),
         ),
