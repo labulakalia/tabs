@@ -59,6 +59,7 @@ class TabGroupController with ChangeNotifier {
   }
 
   void removeTabIndex(int index) {
+    print("remove index");
     if (index < 0 || index >= _tabs.length) {
       return;
     }
@@ -75,6 +76,7 @@ class TabGroupController with ChangeNotifier {
   }
 
   void removeTab(Tab tab) {
+    print("remove index${tab.index}");
     _tabs.remove(tab);
 
     if (_tabs.isEmpty) {
@@ -167,10 +169,10 @@ class TabsGroupState extends State<TabsGroup> {
     final children = <Widget>[];
 
     const backgroundColor = Color.fromARGB(255, 186, 185, 185);
-    const tabBarHeight = 32.0;
+    const tabBarHeight = 26.0;
 
     const borderColor = Color(0xFF4A4A4C);
-    const borderWidth = 1.0;
+    const borderWidth = 0.1;
     const div = VerticalDivider(
       color: borderColor,
       width: borderWidth,

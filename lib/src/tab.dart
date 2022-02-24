@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:tabs/src/layout/close_listener.dart';
 import 'package:tabs/src/util/invisible.dart';
 
@@ -38,19 +37,20 @@ class TabController with ChangeNotifier {
 }
 
 class Tab {
-  Tab({
-    this.title,
-    required this.controller,
-    this.onClose,
-    this.onActivate,
-    this.onDrop,
-  });
+  Tab(
+      {this.title,
+      required this.controller,
+      this.onClose,
+      this.onActivate,
+      this.onDrop,
+      required this.index});
 
   final TabController controller;
   final String? title;
   final void Function()? onClose;
   final void Function()? onActivate;
   final void Function()? onDrop;
+  final int index;
 
   Widget build(bool isActive, [bool isAccepting = false]) {
     return TabWidget(
@@ -67,6 +67,7 @@ class Tab {
       onClose: onClose,
       onActivate: onActivate,
       onDrop: onDrop,
+      index: index,
     );
   }
 }
@@ -185,9 +186,14 @@ class _TabWidgetState extends State<TabWidget> {
               visible: hover || widget.isActive!,
               child: _CloseButton(onClick: close),
             ),
+            const Spacer(),
             Expanded(
               child: content,
             ),
+            const Spacer(),
+            Container(
+                child: Text("${widget.tab?.index}"),
+                padding: EdgeInsets.only(right: 10))
           ],
         ),
       ),
