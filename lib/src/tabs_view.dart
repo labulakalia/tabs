@@ -17,9 +17,11 @@ class TabsController with ChangeNotifier {
 
 class TabsView extends StatefulWidget {
   TabsView({
+    Key? key,
     TabsController? controller,
     this.actions = const [],
-  }) : controller = controller ?? TabsController();
+  })  : controller = controller ?? TabsController(),
+        super(key: key);
 
   final TabsController controller;
   final List<TabsGroupAction> actions;

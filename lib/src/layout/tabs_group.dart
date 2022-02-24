@@ -8,7 +8,7 @@ import 'package:tabs/src/tab.dart';
 import 'package:tabs/src/util/divider.dart';
 
 class TabGroupController with ChangeNotifier {
-  var _tabs = <Tab>[];
+  final _tabs = <Tab>[];
 
   List<Tab> get tabs => _tabs;
 
@@ -50,9 +50,9 @@ class TabGroupController with ChangeNotifier {
     notifyListeners();
   }
 
-  Tab? getActiveTab() {
+  Tab getActiveTab() {
     if (_activeTabIndex == null || _activeTabIndex! >= _tabs.length) {
-      return null;
+      _activeTabIndex = 0;
     }
 
     return _tabs[_activeTabIndex!];
@@ -88,13 +88,12 @@ class TabGroupController with ChangeNotifier {
 }
 
 class TabGroupProvider extends InheritedWidget {
-  TabGroupProvider({
+  const TabGroupProvider({
     Key? key,
     required this.child,
     required this.controller,
   }) : super(key: key, child: child);
 
-  @override
   final Widget child;
 
   final TabGroupController controller;
@@ -110,9 +109,10 @@ class TabGroupProvider extends InheritedWidget {
 }
 
 class TabsGroup extends StatefulWidget implements TabsLayout {
-  TabsGroup({
+  const TabsGroup({
+    Key? key,
     required this.controller,
-  });
+  }) : super(key: key);
 
   final TabGroupController controller;
 
@@ -217,7 +217,7 @@ class TabsGroupState extends State<TabsGroup> {
               width: lastConstraints?.maxWidth ?? 200,
               color: backgroundColor,
               child: DefaultTextStyle(
-                style: TextStyle(),
+                style: const TextStyle(),
                 child: tab.build(true),
               ),
             );
@@ -264,7 +264,7 @@ class TabsGroupState extends State<TabsGroup> {
           _buildActions(context),
         ],
       ),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: backgroundColor,
         border: Border(
           top: BorderSide(color: borderColor, width: borderWidth),
@@ -286,15 +286,20 @@ class TabsGroupState extends State<TabsGroup> {
   }
 
   Widget _buildContent(BuildContext context) {
-    final activeTab = widget.controller.getActiveTab()!;
-    return TabContent(activeTab.controller);
+    final activeTab = widget.controller.getActiveTab();
+    return TabContent(
+      tab: activeTab.controller,
+    );
   }
 }
 
 class TabContent extends StatefulWidget {
-  TabContent(this.tab);
+  const TabContent({
+    Key? key,
+    required this.tab,
+  }) : super(key: key);
 
-  final TabController? tab;
+  final TabController tab;
 
   @override
   _TabContentState createState() => _TabContentState();
@@ -307,25 +312,25 @@ class _TabContentState extends State<TabContent> {
 
   @override
   void initState() {
-    widget.tab!.addListener(onChange);
+    widget.tab.addListener(onChange);
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant TabContent oldWidget) {
-    oldWidget.tab!.removeListener(onChange);
-    widget.tab!.addListener(onChange);
+    oldWidget.tab.removeListener(onChange);
+    widget.tab.addListener(onChange);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    widget.tab!.removeListener(onChange);
+    widget.tab.removeListener(onChange);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.tab!.content ?? Container();
+    return widget.tab.content ?? Container();
   }
 }

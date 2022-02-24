@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tabs/src/layout/close_listener.dart';
@@ -34,20 +33,20 @@ class TabController with ChangeNotifier {
   }
 
   TabController copy() {
-    return TabController._(this._title, this._content);
+    return TabController._(_title, _content);
   }
 }
 
 class Tab {
   Tab({
     this.title,
-    this.controller,
+    required this.controller,
     this.onClose,
     this.onActivate,
     this.onDrop,
   });
 
-  final TabController? controller;
+  final TabController controller;
   final String? title;
   final void Function()? onClose;
   final void Function()? onActivate;
@@ -64,7 +63,7 @@ class Tab {
   Tab copy() {
     return Tab(
       title: title,
-      controller: controller!.copy(),
+      controller: controller.copy(),
       onClose: onClose,
       onActivate: onActivate,
       onDrop: onDrop,
@@ -75,11 +74,12 @@ class Tab {
 const _kInactiveTextColor = Color(0xFF8B8B8B);
 
 class TabWidget extends StatefulWidget {
-  TabWidget({
+  const TabWidget({
+    Key? key,
     this.tab,
     this.isActive,
     this.isAccepting,
-  });
+  }) : super(key: key);
 
   final Tab? tab;
   final bool? isActive;
@@ -94,35 +94,35 @@ class _TabWidgetState extends State<TabWidget> {
   var hover = false;
 
   void onChange() {
-    if (widget.tab!.controller?.title != null) {
+    if (widget.tab!.controller.title != null) {
       setState(() {
-        title = widget.tab!.controller!.title;
+        title = widget.tab!.controller.title;
       });
     }
   }
 
   @override
   void initState() {
-    title = widget.tab!.controller?.title ?? widget.tab!.title ?? title;
-    widget.tab!.controller?.addListener(onChange);
-    widget.tab!.controller!.closeRequest.addListener(close);
+    title = widget.tab!.controller.title ?? widget.tab!.title ?? title;
+    widget.tab!.controller.addListener(onChange);
+    widget.tab!.controller.closeRequest.addListener(close);
     super.initState();
   }
 
   @override
   void didUpdateWidget(TabWidget oldWidget) {
-    title = widget.tab!.controller?.title ?? widget.tab!.title ?? title;
-    oldWidget.tab!.controller?.removeListener(onChange);
-    oldWidget.tab!.controller!.closeRequest.removeListener(close);
-    widget.tab!.controller?.addListener(onChange);
-    widget.tab!.controller!.closeRequest.addListener(close);
+    title = widget.tab!.controller.title ?? widget.tab!.title ?? title;
+    oldWidget.tab!.controller.removeListener(onChange);
+    oldWidget.tab!.controller.closeRequest.removeListener(close);
+    widget.tab!.controller.addListener(onChange);
+    widget.tab!.controller.closeRequest.addListener(close);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    widget.tab!.controller?.removeListener(onChange);
-    widget.tab!.controller!.closeRequest.removeListener(close);
+    widget.tab!.controller.removeListener(onChange);
+    widget.tab!.controller.closeRequest.removeListener(close);
     super.dispose();
   }
 
@@ -136,11 +136,11 @@ class _TabWidgetState extends State<TabWidget> {
     BoxDecoration decoration;
 
     if (widget.isAccepting!) {
-      decoration = BoxDecoration(
+      decoration = const BoxDecoration(
         color: Color(0xFF5A5A5A),
       );
     } else if (widget.isActive!) {
-      decoration = BoxDecoration(
+      decoration = const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -148,8 +148,8 @@ class _TabWidgetState extends State<TabWidget> {
         ),
       );
     } else {
-      decoration = BoxDecoration(
-        color: Colors.transparent,
+      decoration = const BoxDecoration(
+        color: Color.fromARGB(0, 69, 67, 67),
       );
     }
 
@@ -195,7 +195,7 @@ class _TabWidgetState extends State<TabWidget> {
 }
 
 class _CloseButton extends StatelessWidget {
-  _CloseButton({this.onClick});
+  const _CloseButton({Key? key, this.onClick}) : super(key: key);
 
   final void Function()? onClick;
 
@@ -206,8 +206,8 @@ class _CloseButton extends StatelessWidget {
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Container(
-          margin: EdgeInsets.only(left: 6, right: 6, bottom: 3),
-          child: Icon(
+          margin: const EdgeInsets.only(left: 6, right: 6, bottom: 3),
+          child: const Icon(
             CupertinoIcons.clear_thick,
             color: _kInactiveTextColor,
             size: 15,
