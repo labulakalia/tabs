@@ -15,7 +15,7 @@ class Invisible extends StatelessWidget {
     return IgnorePointer(
       ignoring: !visible!,
       child: AnimatedOpacity(
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         opacity: visible! ? 1.0 : 0.0,
         child: child,
       ),

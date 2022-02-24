@@ -6,7 +6,7 @@ import 'package:tabs/src/layout/tabs_layout.dart';
 import 'package:tabs/src/tab.dart';
 
 class TabAcceptRegion extends StatelessWidget {
-  TabAcceptRegion({this.child, this.original, this.onReplace});
+  const TabAcceptRegion({Key? key, this.child, this.original, this.onReplace}) : super(key: key);
 
   final Widget? child;
   final TabsLayout? original;

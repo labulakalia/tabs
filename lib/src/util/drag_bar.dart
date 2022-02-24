@@ -8,7 +8,7 @@ const _kColor = Color(0xFF2D2D2D);
 const _kActiveColor = Color(0xFF3A3D3F);
 
 class HorizontalDragBar extends StatelessWidget {
-  HorizontalDragBar(this.isDragging);
+  const HorizontalDragBar(this.isDragging, {Key? key}) : super(key: key);
 
   final bool isDragging;
 
@@ -29,7 +29,7 @@ class HorizontalDragBar extends StatelessWidget {
 }
 
 class VerticalDragBar extends StatelessWidget {
-  VerticalDragBar(this.isDragging);
+  const VerticalDragBar(this.isDragging, {Key? key}) : super(key: key);
 
   final bool isDragging;
 

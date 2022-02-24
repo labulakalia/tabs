@@ -5,11 +5,11 @@ import 'package:tabs/src/util/drag_bar.dart';
 import 'package:tabs/src/util/extension.dart';
 
 class TabColumn extends StatefulWidget implements TabsLayout {
-  TabColumn({
+  const TabColumn({Key? key, 
     this.top,
     this.bottom,
     this.minHeight = 100,
-  });
+  }) : super(key: key);
 
   final TabsLayout? top;
   final TabsLayout? bottom;

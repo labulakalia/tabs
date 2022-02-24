@@ -5,11 +5,11 @@ import 'package:tabs/src/util/drag_bar.dart';
 import 'package:tabs/src/util/extension.dart';
 
 class TabRow extends StatefulWidget implements TabsLayout {
-  TabRow({
+  const TabRow({Key? key, 
     this.left,
     this.right,
     this.minWidth = 100,
-  });
+  }) : super(key: key);
 
   final TabsLayout? left;
   final TabsLayout? right;

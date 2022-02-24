@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tabs/src/layout/tabs_group.dart';
 
 class TabsGroupAction extends StatelessWidget {
-  TabsGroupAction({this.icon, this.onTap});
+  const TabsGroupAction({Key? key, this.icon, this.onTap}) : super(key: key);
 
   final IconData? icon;
   final void Function(TabGroupController)? onTap;
@@ -15,11 +15,11 @@ class TabsGroupAction extends StatelessWidget {
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Container(
-          padding: EdgeInsets.only(bottom: 2),
+          padding: const EdgeInsets.only(bottom: 2),
           child: Icon(
             icon,
             size: 30,
-            color: Color(0xFF9F9F9F),
+            color: const Color(0xFF9F9F9F),
           ),
         ),
       ),
@@ -28,13 +28,14 @@ class TabsGroupAction extends StatelessWidget {
 }
 
 class TabsGroupActions extends InheritedWidget {
-  TabsGroupActions({
+  const TabsGroupActions({
     Key? key,
     required this.child,
     this.actions = const [],
   }) : super(key: key, child: child);
 
   @override
+  // ignore: overridden_fields
   final Widget child;
 
   final List<TabsGroupAction> actions;

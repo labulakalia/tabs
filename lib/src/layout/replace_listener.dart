@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tabs/src/layout/tabs_layout.dart';
 
 class ReplaceListener extends InheritedWidget {
-  ReplaceListener({
+  const ReplaceListener({
     Key? key,
     required this.child,
     required this.onReplace,

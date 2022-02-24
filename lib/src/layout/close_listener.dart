@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tabs/src/tab.dart';
 
 class CloseListener extends InheritedWidget {
-  CloseListener({
+  const CloseListener({
     Key? key,
     required this.child,
     required this.onClose,
