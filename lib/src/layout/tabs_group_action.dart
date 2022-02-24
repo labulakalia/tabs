@@ -19,7 +19,7 @@ class TabsGroupAction extends StatelessWidget {
           child: Icon(
             icon,
             size: 30,
-            color: const Color(0xFF9F9F9F),
+            color: Color.fromARGB(255, 201, 201, 201),
           ),
         ),
       ),

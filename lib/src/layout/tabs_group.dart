@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' hide Tab, TabController, VerticalDivider;
 import 'package:tabs/src/layout/close_listener.dart';
 import 'package:tabs/src/layout/replace_listener.dart';
 import 'package:tabs/src/layout/tabs_accept_region.dart';
@@ -166,7 +166,7 @@ class TabsGroupState extends State<TabsGroup> {
   Widget _buildTabs(BuildContext context) {
     final children = <Widget>[];
 
-    const backgroundColor = Color(0xFF1D1D1D);
+    const backgroundColor = Color.fromARGB(255, 186, 185, 185);
     const tabBarHeight = 32.0;
 
     const borderColor = Color(0xFF4A4A4C);
@@ -184,60 +184,77 @@ class TabsGroupState extends State<TabsGroup> {
       BoxConstraints? lastConstraints;
       var isAccepting = false;
 
-      final child = Expanded(
-        flex: 1,
-        child: Draggable<Tab>(
-          data: tab,
-          childWhenDragging: Container(),
-          child: LayoutBuilder(builder: (context, constraints) {
-            lastConstraints = constraints;
-            return DragTarget<Tab>(
-              builder: (context, _, __) => GestureDetector(
-                child: tab.build(isActive, isAccepting),
-                onTap: () {
-                  widget.controller.setActiveTab(i);
-                },
-              ),
-              onAcceptWithDetails: (details) {
-                isAccepting = false;
-                widget.controller.insertTab(i, details.data.copy());
-              },
-              onWillAccept: (_) {
-                isAccepting = true;
-                return true;
-              },
-              onLeave: (_) {
-                isAccepting = false;
-              },
-            );
-          }),
-          feedback: Builder(builder: (context) {
-            return Container(
-              height: tabBarHeight,
-              width: lastConstraints?.maxWidth ?? 200,
-              color: backgroundColor,
-              child: DefaultTextStyle(
-                style: const TextStyle(),
-                child: tab.build(true),
-              ),
-            );
-          }),
-          onDragStarted: () {
-            widget.controller.setActiveTab(i);
-            if (widget.controller.length <= 1) {
-              ReplaceListener.of(context)!.requestReplace(null);
-            }
-          },
-          onDragEnd: (detail) {
-            if (detail.wasAccepted) {
-              widget.controller.removeTab(tab);
-              tab.onDrop?.call();
-            }
-          },
-        ),
+      // final child = Expanded(
+      //   // flex: 1,
+      //   child: Draggable<Tab>(
+      //     axis: Axis.horizontal,
+      //     data: tab,
+      //     childWhenDragging: Container(),
+      //     child: LayoutBuilder(builder: (context, constraints) {
+      //       lastConstraints = constraints;
+      //       return DragTarget<Tab>(
+      //         builder: (context, _, __) => GestureDetector(
+      //           child: tab.build(isActive, isAccepting),
+      //           onTap: () {
+      //             print("set active tab $i");
+      //             widget.controller.setActiveTab(i);
+      //           },
+      //         ),
+      //         onAcceptWithDetails: (details) {
+      //           isAccepting = false;
+      //           widget.controller.insertTab(i, details.data.copy());
+      //         },
+      //         onWillAccept: (_) {
+      //           isAccepting = true;
+      //           return true;
+      //         },
+      //         onLeave: (_) {
+      //           isAccepting = false;
+      //         },
+      //       );
+      //     }),
+      //     feedback: Builder(builder: (context) {
+      //       return Container(
+      //         height: tabBarHeight,
+      //         width: lastConstraints?.maxWidth ?? 200,
+      //         color: backgroundColor,
+      //         child: DefaultTextStyle(
+      //           style: const TextStyle(),
+      //           child: tab.build(isActive, isAccepting),
+      //         ),
+      //       );
+      //     }),
+      //     // onDragStarted: () {
+      //     //   // widget.controller.setActiveTab(i);
+      //     //   if (widget.controller.length <= 1) {
+      //     //     ReplaceListener.of(context)!.requestReplace(null);
+      //     //   }
+      //     // },
+      //     onDragEnd: (detail) {
+      //       print("darg end ${detail.offset} ${context.size}");
+      //       if (detail.wasAccepted) {
+      //         widget.controller.removeTab(tab);
+      //         tab.onDrop?.call();
+      //       }
+      //     },
+      //   ),
+      // );
+      // final child2 = Expanded(flex: 1, child: tab.build(isActive, isAccepting));
+      final child2 = Expanded(
+        child: GestureDetector(
+            child: tab.build(isActive),
+            onTap: () {
+              widget.controller.setActiveTab(i);
+            }),
+        // child: TextButton(
+        //     style: ButtonStyle(),
+        //     onPressed: (() {
+        //       widget.controller.setActiveTab(i);
+        //     }),
+        //     child: tab.build(isActive))
       );
-
-      children.add(child);
+      // final child2 = TextButton(onPressed: onPressed, child: child)
+      children.add(child2);
       children.add(div);
     }
 

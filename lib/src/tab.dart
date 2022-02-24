@@ -137,28 +137,29 @@ class _TabWidgetState extends State<TabWidget> {
 
     if (widget.isAccepting!) {
       decoration = const BoxDecoration(
-        color: Color(0xFF5A5A5A),
+        color: Color.fromARGB(255, 181, 181, 181),
       );
     } else if (widget.isActive!) {
+      // 活跃
       decoration = const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF3C3F41), Color(0xFF36383A)],
-        ),
+        color: Color.fromARGB(255, 232, 232, 232),
+        //  color: Color.fromARGB(255, 232, 232, 232),
+        // gradient: LinearGradient(
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        //   colors: [Color(0xffF7F5F5)],
+        // ),
       );
     } else {
       decoration = const BoxDecoration(
-        color: Color.fromARGB(0, 69, 67, 67),
+        color: Color.fromARGB(255, 198, 196, 196),
       );
     }
-
-    final textColor = widget.isActive! ? Colors.white : _kInactiveTextColor;
 
     final content = Center(
       child: Text(
         title!,
-        style: TextStyle(color: textColor),
+        // style: TextStyle(color: Color.fromARGB(255, 29, 29, 29)),
         softWrap: false,
         overflow: TextOverflow.fade,
       ),
