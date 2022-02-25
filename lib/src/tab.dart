@@ -50,7 +50,7 @@ class Tab {
   final void Function()? onClose;
   final void Function()? onActivate;
   final void Function()? onDrop;
-  final int index;
+  int index;
 
   Widget build(bool isActive, [bool isAccepting = false]) {
     return TabWidget(
@@ -192,7 +192,8 @@ class _TabWidgetState extends State<TabWidget> {
             ),
             const Spacer(),
             Container(
-                child: Text("${widget.tab?.index}"),
+                child: Text("⌘${widget.tab!.index + 1}"),
+                // child: Icon(),
                 padding: EdgeInsets.only(right: 10))
           ],
         ),

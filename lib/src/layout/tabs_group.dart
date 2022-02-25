@@ -16,7 +16,10 @@ class TabGroupController with ChangeNotifier {
 
   void addTab(Tab tab, {bool activate = false}) {
     _tabs.add(tab);
-
+    for (var i = 0; i < _tabs.length; i++) {
+      // 窗口关闭后重新计算值
+      _tabs[i].index = i;
+    }
     if (_activeTabIndex == null || activate) {
       setActiveTab(_tabs.length - 1);
     }
@@ -78,7 +81,11 @@ class TabGroupController with ChangeNotifier {
   void removeTab(Tab tab) {
     print("remove index${tab.index}");
     _tabs.remove(tab);
-
+    print("${_tabs}");
+    for (var i = 0; i < _tabs.length; i++) {
+      // 窗口关闭后重新计算值
+      _tabs[i].index = i;
+    }
     if (_tabs.isEmpty) {
       _activeTabIndex = null;
     } else {
