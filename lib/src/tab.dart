@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:tabs/src/layout/close_listener.dart';
 import 'package:tabs/src/util/invisible.dart';
@@ -46,7 +48,7 @@ class Tab {
       required this.index});
 
   final TabController controller;
-  final String? title;
+  String? title;
   final void Function()? onClose;
   final void Function()? onActivate;
   final void Function()? onDrop;
@@ -58,6 +60,10 @@ class Tab {
       isActive: isActive,
       isAccepting: isAccepting,
     );
+  }
+
+  void setTitle(String title) {
+    title = title;
   }
 
   Tab copy() {
@@ -77,12 +83,12 @@ const _kInactiveTextColor = Color(0xFF8B8B8B);
 class TabWidget extends StatefulWidget {
   const TabWidget({
     Key? key,
-    this.tab,
+    required this.tab,
     this.isActive,
     this.isAccepting,
   }) : super(key: key);
 
-  final Tab? tab;
+  final Tab tab;
   final bool? isActive;
   final bool? isAccepting;
 
@@ -95,41 +101,41 @@ class _TabWidgetState extends State<TabWidget> {
   var hover = false;
 
   void onChange() {
-    if (widget.tab!.controller.title != null) {
+    if (widget.tab.controller.title != null) {
       setState(() {
-        title = widget.tab!.controller.title;
+        title = widget.tab.controller.title;
       });
     }
   }
 
   @override
   void initState() {
-    title = widget.tab!.controller.title ?? widget.tab!.title ?? title;
-    widget.tab!.controller.addListener(onChange);
-    widget.tab!.controller.closeRequest.addListener(close);
+    title = widget.tab.controller.title ?? widget.tab.title ?? title;
+    widget.tab.controller.addListener(onChange);
+    widget.tab.controller.closeRequest.addListener(close);
     super.initState();
   }
 
   @override
   void didUpdateWidget(TabWidget oldWidget) {
-    title = widget.tab!.controller.title ?? widget.tab!.title ?? title;
-    oldWidget.tab!.controller.removeListener(onChange);
-    oldWidget.tab!.controller.closeRequest.removeListener(close);
-    widget.tab!.controller.addListener(onChange);
-    widget.tab!.controller.closeRequest.addListener(close);
+    title = widget.tab.controller.title ?? widget.tab.title ?? title;
+    oldWidget.tab.controller.removeListener(onChange);
+    oldWidget.tab.controller.closeRequest.removeListener(close);
+    widget.tab.controller.addListener(onChange);
+    widget.tab.controller.closeRequest.addListener(close);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    widget.tab!.controller.removeListener(onChange);
-    widget.tab!.controller.closeRequest.removeListener(close);
+    widget.tab.controller.removeListener(onChange);
+    widget.tab.controller.closeRequest.removeListener(close);
     super.dispose();
   }
 
   void close() {
     CloseListener.of(context)!.close(widget.tab);
-    widget.tab!.onClose?.call();
+    widget.tab.onClose?.call();
   }
 
   @override
@@ -192,7 +198,10 @@ class _TabWidgetState extends State<TabWidget> {
             ),
             const Spacer(),
             Container(
-                child: Text("⌘${widget.tab!.index + 1}"),
+                child: Platform.isMacOS
+                    ? Text("⌘ ${widget.tab.index + 1}")
+                    : Text("Ctrl ${widget.tab.index + 1}"),
+                // child: Text("Ctrl ${widget.tab!.index + 1}"), // ⌘
                 // child: Icon(),
                 padding: EdgeInsets.only(right: 10))
           ],
