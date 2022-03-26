@@ -9,7 +9,7 @@ class TabController with ChangeNotifier {
 
   TabController._(this._title, this._content);
 
-  String? _title;
+  String? _title; // set tab title
 
   Widget? _content;
 
